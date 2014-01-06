@@ -1,0 +1,20 @@
+{
+  "servers": [
+    {
+      "host": "0.0.0.0",
+      "port": 80
+    }
+  ],
+  "plugins": {
+    "kappa": [
+      {},
+      {
+        "vhost": "npm.justdeploy.eu",
+        "paths": [
+          "http://npm.justdeploy.eu:5984/",
+          "https://registry.npmjs.org/"
+        ]
+      }
+    ]
+  }
+}
