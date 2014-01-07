@@ -13,7 +13,7 @@ ENV KAPPA_REPOSITORY https://github.com/jwvdiermen/kappa-npm-proxy.git
 RUN export DEBIAN_FRONTEND=noninteractive
 
 # Install nodejs
-RUN	apt-get update
+RUN apt-get update
 RUN apt-get install -y python-software-properties python g++ make git-core
 RUN add-apt-repository -y ppa:chris-lea/node.js
 RUN apt-get update
