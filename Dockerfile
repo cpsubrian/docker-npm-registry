@@ -30,7 +30,7 @@ RUN printf "\n[vhosts]\n${NPM_VHOST}:5984 = /registry/_design/scratch/_rewrite\n
 RUN printf "\n[admins]\nadmin = ${COUCHDB_ADMIN_PASSWORD}\n" >> /usr/local/etc/couchdb/local.ini
 
 # Install Kappa
-RUN cd /var/ && git clone ${KAPPA_REPOSITORY} kappa && cd kappa
+RUN cd /var/ && git clone ${KAPPA_REPOSITORY} kappa && cd kappa && npm install
 
 # Install Supervisor
 RUN apt-get -y install supervisor
@@ -39,7 +39,7 @@ RUN apt-get -y install supervisor
 ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 ADD ./kappa-config.json /var/kappa/config.json
-RUN sed -i '/'s/npm.justdeploy.eu/${NPM_VHOST}/g' /etc/supervisor/conf.d/supervisord.conf
+RUN sed -i 's/npm.justdeploy.eu/${NPM_VHOST}/g' /var/kappa/config.json
 
 # Cleanup after install
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -47,6 +47,4 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 EXPOSE 5984
 EXPOSE 80
 
-ADD	./start.sh /start.sh
-RUN	chmod +x /start.sh
-CMD	["/bin/bash", "/start.sh"]
+CMD ["supervisord", "-n"]
