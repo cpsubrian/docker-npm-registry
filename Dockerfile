@@ -28,7 +28,7 @@ RUN cd /tmp/apache-couchdb-* ; ./configure && make && make install
 RUN printf "\n[httpd]\nbind_address = 0.0.0.0\nsecure_rewrites = false\n" >> /usr/local/etc/couchdb/local.ini
 
 # Install Kappa
-RUN cd /user/local && git clone ${KAPPA_REPOSITORY} kappa && cd kappa && npm install
+RUN cd /usr/local && git clone ${KAPPA_REPOSITORY} kappa && cd kappa && npm install
 
 # Install Supervisor
 RUN apt-get -y install supervisor
@@ -48,8 +48,8 @@ RUN printf "\n[admins]\nadmin = ${COUCHDB_ADMIN_PASSWORD}\n" >> /usr/local/etc/c
 # Copy configuration files.
 ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ADD ./kappa-config.json /user/local/kappa/config.json
-RUN sed -i 's/npm.justdeploy.eu/'${NPM_VHOST}'/g' /user/local/kappa/config.json
+ADD ./kappa-config.json /usr/local/kappa/config.json
+RUN sed -i 's/npm.justdeploy.eu/'${NPM_VHOST}'/g' /usr/local/kappa/config.json
 
 # Cleanup after install
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
