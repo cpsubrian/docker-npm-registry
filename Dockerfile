@@ -2,9 +2,8 @@
 #
 # Version: 0.1.0
 
-MAINTAINER jwvdiermen
-
 FROM stackbrew/ubuntu:12.04
+MAINTAINER jwvdiermen
 
 ENV NPM_VHOST npm.justdeploy.eu
 ENV COUCHDB_ADMIN_PASSWORD your_secret_password
