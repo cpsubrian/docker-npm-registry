@@ -37,7 +37,7 @@ RUN apt-get -y install supervisor
 RUN apt-get install -y curl
 
 RUN npm install couchapp -g
-RUN cd /tmp ; git clone https://github.com/isaacs/npmjs.org.git
+RUN cd /tmp ; git clone https://github.com/jwvdiermen/npmjs.org.git
 RUN cd /tmp/npmjs.org && npm install couchapp semver
 
 ADD ./configure-couchdb.sh /tmp/configure-couchdb.sh
