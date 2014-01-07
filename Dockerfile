@@ -49,7 +49,7 @@ RUN printf "\n[admins]\nadmin = ${COUCHDB_ADMIN_PASSWORD}\n" >> /usr/local/etc/c
 ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 ADD ./kappa-config.json /var/kappa/config.json
-RUN sed -i 's/npm.justdeploy.eu/${NPM_VHOST}/g' /var/kappa/config.json
+RUN sed -i 's/npm.justdeploy.eu/'${NPM_VHOST}'/g' /var/kappa/config.json
 
 # Cleanup after install
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
