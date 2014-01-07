@@ -11,7 +11,7 @@
       {
         "vhost": "npm.justdeploy.eu",
         "paths": [
-          "http://npm.justdeploy.eu:5984/",
+          "http://localhost:5984/registry/_design/scratch/_rewrite/",
           "https://registry.npmjs.org/"
         ]
       }

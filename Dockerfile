@@ -27,9 +27,6 @@ RUN cd /tmp/apache-couchdb-* ; ./configure && make && make install
 
 RUN printf "\n[httpd]\nbind_address = 0.0.0.0\nsecure_rewrites = false\n" >> /usr/local/etc/couchdb/local.ini
 
-# Point host to localhost for proxy reasons.
-RUN printf "\n127.0.0.1 ${NPM_VHOST}\n" >> /etc/hosts
-
 # Install Kappa
 RUN cd /var/ && git clone ${KAPPA_REPOSITORY} kappa && cd kappa && npm install
 
@@ -46,7 +43,6 @@ RUN cd /tmp/npmjs.org && npm install couchapp semver
 ADD ./configure-couchdb.sh /tmp/configure-couchdb.sh
 RUN /bin/sh /tmp/configure-couchdb.sh
 
-RUN printf "\n[vhosts]\n${NPM_VHOST}:5984 = /registry/_design/scratch/_rewrite\n" >> /usr/local/etc/couchdb/local.ini
 RUN printf "\n[admins]\nadmin = ${COUCHDB_ADMIN_PASSWORD}\n" >> /usr/local/etc/couchdb/local.ini
 
 # Copy configuration files.
