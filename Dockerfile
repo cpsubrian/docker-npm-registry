@@ -54,6 +54,8 @@ RUN sed -i 's/npm.justdeploy.eu/'${NPM_VHOST}'/g' /user/local/kappa/config.json
 # Cleanup after install
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+VOLUME ["usr/local/var/lib/couchdb"]
+
 EXPOSE 5984
 EXPOSE 80
 
