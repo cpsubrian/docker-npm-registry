@@ -1,5 +1,5 @@
 # A private npm registry based on Docker and Kappa
-#
+# 
 # Version: 0.1.0
 
 FROM stackbrew/ubuntu:12.04
@@ -19,20 +19,35 @@ RUN apt-get update
 RUN apt-get install -y nodejs
 
 # Install CouchDB
-RUN apt-get install -y build-essential autoconf automake libtool erlang libicu-dev libmozjs-dev libcurl4-openssl-dev wget
+RUN apt-get install -y build-essential autoconf make automake libtool erlang libicu-dev libmozjs-dev libcurl4-openssl-dev wget
 
-RUN cd /tmp && wget http://apache.mirrors.hostinginnederland.nl/couchdb/source/1.5.0/apache-couchdb-1.5.0.tar.gz && tar xfv apache-couchdb-1.5.0.tar.gz && cd apache-couchdb-1.5.0
-RUN ./configure && make && make install 
+RUN cd /tmp ; wget http://apache.mirrors.hostinginnederland.nl/couchdb/source/1.5.0/apache-couchdb-1.5.0.tar.gz
+RUN cd /tmp && tar xfv apache-couchdb-1.5.0.tar.gz
+RUN cd /tmp/apache-couchdb-* ; ./configure && make && make install
 
 RUN printf "\n[httpd]\nbind_address = 0.0.0.0\nsecure_rewrites = false\n" >> /usr/local/etc/couchdb/local.ini
-RUN printf "\n[vhosts]\n${NPM_VHOST}:5984 = /registry/_design/scratch/_rewrite\n" >> /usr/local/etc/couchdb/local.ini
-RUN printf "\n[admins]\nadmin = ${COUCHDB_ADMIN_PASSWORD}\n" >> /usr/local/etc/couchdb/local.ini
+
+# Point host to localhost for proxy reasons.
+RUN printf "\n127.0.0.1 ${NPM_VHOST}\n" >> /etc/hosts
 
 # Install Kappa
 RUN cd /var/ && git clone ${KAPPA_REPOSITORY} kappa && cd kappa && npm install
 
 # Install Supervisor
 RUN apt-get -y install supervisor
+
+# Configure CoucbDB
+RUN apt-get install -y curl
+
+RUN npm install couchapp -g
+RUN cd /tmp ; git clone https://github.com/isaacs/npmjs.org.git
+RUN cd /tmp/npmjs.org && npm install couchapp semver
+
+ADD ./configure-couchdb.sh /tmp/configure-couchdb.sh
+RUN /bin/sh /tmp/configure-couchdb.sh
+
+RUN printf "\n[vhosts]\n${NPM_VHOST}:5984 = /registry/_design/scratch/_rewrite\n" >> /usr/local/etc/couchdb/local.ini
+RUN printf "\n[admins]\nadmin = ${COUCHDB_ADMIN_PASSWORD}\n" >> /usr/local/etc/couchdb/local.ini
 
 # Copy configuration files.
 ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
