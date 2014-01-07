@@ -24,17 +24,18 @@ On your machine that has Docker installed, run the following commands:
 	# sed -i 's/npm\.justdeploy\.eu/npm.example.com/g' Dockerfile
 	# sed -i 's/your_secret_password/something_more_secure/g' Dockerfile
 	docker build -rm -t=software/npm-registry . 
+	docker run -name npm-registry-data software/npm-registry true
 
 Now you can start the registry with the following command:
 
-	docker run -d -p 80:80 software/npm-registry
+	docker run -d -p 80:80 -volumes-from npm-registry-data software/npm-registry
 
 It is probably a good idea to run a reverse proxy in front of your Docker host if you're running multiple webservice containers
 and you want to keep them available on port 80.
 
 If you want to run the repository on a different port (e.g. 8080), change the first number in the command:
 
-	docker run -d -p 8080:80 software/npm-registry
+	docker run -d -p 8080:80 -volumes-from npm-registry-data software/npm-registry
 
 ## Using the registry with the npm client
 
