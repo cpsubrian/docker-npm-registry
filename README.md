@@ -5,12 +5,12 @@ A private npm registry based on Docker and Kappa.
 
 ## About
 
-Use this project if you want your private npm registry without cloning the complete official npm registry.
-See the [Kappa](https://github.com/paypal/kappa) project for more details.
+Use this project if you want your own private npm registry without cloning the complete official npm registry database.
+See the [Kappa](https://github.com/paypal/kappa) project for more details how this is realized.
 
 ## Configuration & Usage
 
-You need a Linux machine with Docker installed. See the Docker [website](http://www.docker.io/) for more details.
+You need a Linux machine with Docker installed. See the [Docker website](http://www.docker.io/) for more details.
 
 Fork this repository to make your changes or clone this repository and make your changes directly.
 
