@@ -25,7 +25,11 @@ RUN cd /tmp ; wget http://apache.mirrors.hostinginnederland.nl/couchdb/source/1.
 RUN cd /tmp && tar xfv apache-couchdb-1.5.0.tar.gz
 RUN cd /tmp/apache-couchdb-* ; ./configure && make && make install
 
+RUN printf "\n[couch_httpd_auth]\npublic_fields = appdotnet, avatar, avatarMedium, avatarLarge, date, email, fields, freenode, fullname, github, homepage, name, roles, twitter, type, _id, _rev\nusers_db_public = true" >> /usr/local/etc/couchdb/local.ini
+RUN printf "\n" >> /usr/local/etc/couchdb/local.ini
 RUN printf "\n[httpd]\nbind_address = 0.0.0.0\nsecure_rewrites = false\n" >> /usr/local/etc/couchdb/local.ini
+RUN printf "\n" >> /usr/local/etc/couchdb/local.ini
+RUN printf "\n[couchdb]\ndelayed_commits = false" >> /usr/local/etc/couchdb/local.ini
 
 # Install Kappa
 RUN cd /usr/local && git clone ${KAPPA_REPOSITORY} kappa && cd kappa && npm install
@@ -38,7 +42,7 @@ RUN apt-get install -y curl
 
 RUN npm install couchapp -g
 RUN cd /tmp ; git clone https://github.com/npm/npm-registry-couchapp.git npmjs.org
-RUN cd /tmp/npmjs.org && npm install couchapp semver
+RUN cd /tmp/npmjs.org && npm install
 
 ADD ./configure-couchdb.sh /tmp/configure-couchdb.sh
 RUN /bin/sh /tmp/configure-couchdb.sh
