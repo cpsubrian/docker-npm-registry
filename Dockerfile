@@ -1,5 +1,5 @@
 # A private npm registry based on Docker and Kappa
-# 
+#
 # Version: 0.1.0
 
 FROM stackbrew/ubuntu:12.04
@@ -37,7 +37,7 @@ RUN apt-get -y install supervisor
 RUN apt-get install -y curl
 
 RUN npm install couchapp -g
-RUN cd /tmp ; git clone https://github.com/jwvdiermen/npmjs.org.git
+RUN cd /tmp ; git clone https://github.com/npm/npm-registry-couchapp.git npmjs.org
 RUN cd /tmp/npmjs.org && npm install couchapp semver
 
 ADD ./configure-couchdb.sh /tmp/configure-couchdb.sh
